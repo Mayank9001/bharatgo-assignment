@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { Card } from "../components/Card/index";
 import { ShoppingCartContext } from "../utils/context";
+import { useParams } from "react-router-dom";
 const Home = () => {
   const context = useContext(ShoppingCartContext);
+  const category = useParams();
   return (
     <div className="flex flex-col mt-20 items-center">
       <div className="flex items-center justify-center  relative w-80 mb-4">

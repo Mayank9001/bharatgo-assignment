@@ -47,7 +47,7 @@ const NavBar = () => {
         {context.categoryItems &&
         Object.keys(context.categoryItems).length > 0 ? (
           Object.entries(context.categoryItems).map(([cat, item]) => {
-            const categoryPath = `/${cat}`;
+            const categoryPath = `/${cat.toLowerCase()}`;
             const isActive = location.pathname === categoryPath;
 
             return (
@@ -69,34 +69,6 @@ const NavBar = () => {
         ) : (
           <></>
         )}
-        {/* <li>
-          <NavLink
-            to="/clothes"
-            onClick={() => {
-              context.setSearchByCategory("shoes");
-              closeEveryThing();
-            }}
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            <p>Clothes</p>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/furnitures"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            <p>Furnitures</p>
-          </NavLink>
-        </li>
-        <li>
-          <NavLink
-            to="/miscellaneous"
-            className={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            <p>Miscellaneous</p>
-          </NavLink>
-        </li> */}
       </ul>
       <ul className=" items-center gap-4  hidden md:flex">
         <li>
