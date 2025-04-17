@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ShoppingCartContext } from "../utils/context";
 import {
   ArchiveBoxIcon,
@@ -16,6 +16,7 @@ const NavBar = () => {
     setUserMenuIsActive(false);
   };
   const activeStyle = "underline underline-offset-8";
+  const location = useLocation();
   return (
     <div className="bg-white border-b-2 border-gray-400 flex justify-between items-center fixed top-0 z-10 w-full h-18 px-8 text-sm font-normal">
       <ul className="flex items-center gap-4 font-manrope font-normal text-sm">
@@ -43,11 +44,36 @@ const NavBar = () => {
             <p>All</p>
           </NavLink>
         </li>
-        <li>
+        {context.categoryItems &&
+        Object.keys(context.categoryItems).length > 0 ? (
+          Object.entries(context.categoryItems).map(([cat, item]) => {
+            const categoryPath = `/${cat}`;
+            const isActive = location.pathname === categoryPath;
+
+            return (
+              <li className="" key={cat}>
+                <NavLink
+                  to={`/:${cat.toLowerCase()}`}
+                  onClick={() => {
+                    context.setActiveCategory(cat);
+                    context.setSearchByCategory(cat);
+                    closeEveryThing();
+                  }}
+                  className={isActive ? activeStyle : undefined}
+                >
+                  <p>{cat}</p>
+                </NavLink>
+              </li>
+            );
+          })
+        ) : (
+          <></>
+        )}
+        {/* <li>
           <NavLink
             to="/clothes"
             onClick={() => {
-              context.setSearchByCategory("clothes");
+              context.setSearchByCategory("shoes");
               closeEveryThing();
             }}
             className={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -70,7 +96,7 @@ const NavBar = () => {
           >
             <p>Miscellaneous</p>
           </NavLink>
-        </li>
+        </li> */}
       </ul>
       <ul className=" items-center gap-4  hidden md:flex">
         <li>
@@ -92,7 +118,7 @@ const NavBar = () => {
         <li>
           <p className="flex gap-2">
             <ShoppingCartIcon className="h-6 w-6 text-black-500 cursor-pointer" />
-            123
+            0
           </p>
         </li>
       </ul>

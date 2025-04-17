@@ -10,7 +10,6 @@ const totalPrice = (products) => {
   return total;
 };
 
-
 function ShoppingCartProvider({ children }) {
   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
   const [isCheckoutSideMenuOpen, setCheckOutMenuOpen] = useState(false);
@@ -23,6 +22,8 @@ function ShoppingCartProvider({ children }) {
   const [searchTitleBar, setSearchTitleBar] = useState(null);
   const [searchByCategory, setSearchByCategory] = useState(null);
   const [animationSwitch, setAnimationSwitch] = useState(false);
+  const [categoryItems, setCategoryItems] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("");
 
   const openProductDetail = () => setIsProductDetailOpen(true);
   const closeProductDetail = () => setIsProductDetailOpen(false);
@@ -63,6 +64,26 @@ function ShoppingCartProvider({ children }) {
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    if (items && Array.isArray(items)) {
+      const categorized = items.reduce((acc, product) => {
+        const categoryName =
+          product.category?.name?.split(" ")[0] || "Miscellaneous";
+
+        if (!acc[categoryName]) {
+          acc[categoryName] = [];
+        }
+
+        acc[categoryName].push(product);
+
+        return acc;
+      }, {});
+
+      setCategoryItems(categorized);
+    } else {
+      setCategoryItems({});
+    }
+  }, [items]);
 
   useEffect(() => {
     updateTotalPriceOfProducts();
@@ -115,6 +136,9 @@ function ShoppingCartProvider({ children }) {
         cleanTitlebarState,
         animationSwitch,
         setAnimationSwitch,
+        categoryItems,
+        activeCategory,
+        setActiveCategory,
       }}
     >
       {children}
